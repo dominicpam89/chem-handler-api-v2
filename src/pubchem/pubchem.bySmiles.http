@@ -1,0 +1,45 @@
+### Get by name full records
+POST http://localhost:3000/pubchem/smiles
+Content-Type: application/json
+
+{
+    "smiles": "CCCC",
+    "operationType": "fullRecords"
+}
+
+### Get response by name filtered by property
+POST http://localhost:3000/pubchem/smiles
+Content-Type: application/json
+
+{
+    "smiles": "CCCC",
+    "operationType": "property",
+    "propertyName": "MolecularWeight"
+}
+
+
+### Get response by name filtered by multiple properties
+POST http://localhost:3000/pubchem/smiles
+Content-Type: application/json
+
+{
+    "smiles": "CCCC",
+    "operationType": "property",
+    "propertyName": "MolecularWeight,MolecularFormula,HBondDonorCount"
+}
+
+
+
+### Get response by name filtered only synonyms
+POST http://localhost:3000/pubchem/smiles
+Content-Type: application/json
+
+{
+    "smiles": "CCCC",
+    "operationType": "synonyms"
+}
+
+
+
+### Get response by name filtered only PNG
+GET http://localhost:3000/pubchem/smiles/CCCC/image

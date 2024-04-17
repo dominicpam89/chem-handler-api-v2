@@ -1,0 +1,45 @@
+### Get by CID full records
+POST http://localhost:3000/pubchem/cid
+Content-Type: application/json
+
+{
+    "id": 12,
+    "operationType": "fullRecords"
+}
+
+### Get response by CID filtered by property
+POST http://localhost:3000/pubchem/cid
+Content-Type: application/json
+
+{
+    "id": 1,
+    "operationType": "property",
+    "propertyName": "MolecularWeight"
+}
+
+
+### Get response by CID filtered by multiple properties
+POST http://localhost:3000/pubchem/cid
+Content-Type: application/json
+
+{
+    "id": 1,
+    "operationType": "property",
+    "propertyName": "MolecularWeight,MolecularFormula,HBondDonorCount"
+}
+
+
+
+### Get response by CID filtered only synonyms
+POST http://localhost:3000/pubchem/cid
+Content-Type: application/json
+
+{
+    "id": 1,
+    "operationType": "synonyms"
+}
+
+
+
+### Get response by CID filtered only PNG
+GET http://localhost:3000/pubchem/cid/3/image

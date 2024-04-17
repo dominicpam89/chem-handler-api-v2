@@ -1,0 +1,45 @@
+### Get by name full records
+POST http://localhost:3000/pubchem/name
+Content-Type: application/json
+
+{
+    "name": "glucose",
+    "operationType": "fullRecords"
+}
+
+### Get response by name filtered by property
+POST http://localhost:3000/pubchem/name
+Content-Type: application/json
+
+{
+    "name": "glucose",
+    "operationType": "property",
+    "propertyName": "MolecularWeight"
+}
+
+
+### Get response by name filtered by multiple properties
+POST http://localhost:3000/pubchem/name
+Content-Type: application/json
+
+{
+    "name": "glucose",
+    "operationType": "property",
+    "propertyName": "MolecularWeight,MolecularFormula,HBondDonorCount"
+}
+
+
+
+### Get response by name filtered only synonyms
+POST http://localhost:3000/pubchem/name
+Content-Type: application/json
+
+{
+    "name": "glucose",
+    "operationType": "synonyms"
+}
+
+
+
+### Get response by name filtered only PNG
+GET http://localhost:3000/pubchem/name/glucose/image
