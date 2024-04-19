@@ -1,0 +1,45 @@
+### Get by CID full records
+POST https://chem-handler-api-v2.vercel.app//pubchem/cid
+Content-Type: application/json
+
+{
+    "id": 12,
+    "operationType": "fullRecords"
+}
+
+### Get response by CID filtered by property
+POST https://chem-handler-api-v2.vercel.app//pubchem/cid
+Content-Type: application/json
+
+{
+    "id": 1,
+    "operationType": "property",
+    "propertyName": "MolecularWeight"
+}
+
+
+### Get response by CID filtered by multiple properties
+POST https://chem-handler-api-v2.vercel.app//pubchem/cid
+Content-Type: application/json
+
+{
+    "id": 1,
+    "operationType": "property",
+    "propertyName": "MolecularWeight,MolecularFormula,HBondDonorCount"
+}
+
+
+
+### Get response by CID filtered only synonyms
+POST https://chem-handler-api-v2.vercel.app//pubchem/cid
+Content-Type: application/json
+
+{
+    "id": 1,
+    "operationType": "synonyms"
+}
+
+
+
+### Get response by CID filtered only PNG
+GET https://chem-handler-api-v2.vercel.app//pubchem/cid/3/image
