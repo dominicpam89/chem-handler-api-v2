@@ -1,73 +1,197 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+<h2># Introduction</h2>
+
+<p>The purpose of creating this middleware app or API gateway is to streamline data from multiple API services. 
+In the <b>chem-handler-api-v2</b>, the services included are:</p>
+
+<ul>
+<li>Self-hosted service (main backend)</li>
+<li>PubChem API</li>
+</ul>
+
+<p>
+With this setup, the frontend application will be able to connect </br>
+to a single source to retrieve the required data.
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<h2># Self-hosted service (main backend)</h2>
+<p>Currently, the self-hosted service is not connected to a real backend. Instead, it is connected to a mock API that returns a response object of a Compound, structured as follows:</p>
+<blockquote>
+class Compound{
+  pk: number;
+  trivial_name: string;
+  cas_number: string;
+  inci_name: string;
+  smiles: string;
+  comedogenicity_class: number;
+}
+</blockquote>
+<h3>## Usage:</h3>
+<blockquote>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+### Get response list of all compounds
 
-## Description
+GET https://chem-handler-api-v2.vercel.app/compounds
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Get Response one of compounds registered in mock API json
 
-## Installation
+GET https://chem-handler-api-v2.vercel.app/compounds/:id
 
-```bash
-$ npm install
-```
+Example:
+GET https://chem-handler-api-v2.vercel.app/compounds/150
 
-## Running the app
+</blockquote>
 
-```bash
-# development
-$ npm run start
+<h2># PubChem Service (3rd Party Service)</h2>
+<p>This service primarily returns responses obtained from the request body to the PubChem database. It utilizes an interceptor to transform the original records into a more useful format.</p>
 
-# watch mode
-$ npm run start:dev
+<h3>## Usage:</h3>
+<h4>### Search by CID:</h4>
+<blockquote>
+### Get by CID full records
+POST https://chem-handler-api-v2.vercel.app/pubchem/cid
+Content-Type: application/json
 
-# production mode
-$ npm run start:prod
-```
+{
+"id": 12,
+"operationType": "fullRecords"
+}
 
-## Test
+### Get response by CID filtered by property
 
-```bash
-# unit tests
-$ npm run test
+POST https://chem-handler-api-v2.vercel.app/pubchem/cid
+Content-Type: application/json
 
-# e2e tests
-$ npm run test:e2e
+{
+"id": 1,
+"operationType": "property",
+"propertyName": "MolecularWeight"
+}
 
-# test coverage
-$ npm run test:cov
-```
+### Get response by CID filtered by multiple properties
 
-## Support
+POST https://chem-handler-api-v2.vercel.app/pubchem/cid
+Content-Type: application/json
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+{
+"id": 1,
+"operationType": "property",
+"propertyName": "MolecularWeight,MolecularFormula,HBondDonorCount"
+}
 
-## Stay in touch
+### Get response by CID filtered only synonyms
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+POST https://chem-handler-api-v2.vercel.app/pubchem/cid
+Content-Type: application/json
 
-## License
+{
+"id": 1,
+"operationType": "synonyms"
+}
 
-Nest is [MIT licensed](LICENSE).
+### Get response by CID filtered only PNG
+
+GET https://chem-handler-api-v2.vercel.app/pubchem/cid/3/image
+
+</blockquote>
+
+<h4>### Search by Name:</h4>
+<blockquote>
+### Get by name full records
+POST https://chem-handler-api-v2.vercel.app/pubchem/name
+Content-Type: application/json
+
+{
+"name": "glucose",
+"operationType": "fullRecords"
+}
+
+### Get response by name filtered by property
+
+POST https://chem-handler-api-v2.vercel.app/pubchem/name
+Content-Type: application/json
+
+{
+"name": "glucose",
+"operationType": "property",
+"propertyName": "MolecularWeight"
+}
+
+### Get response by name filtered by multiple properties
+
+POST https://chem-handler-api-v2.vercel.app/pubchem/name
+Content-Type: application/json
+
+{
+"name": "glucose",
+"operationType": "property",
+"propertyName": "MolecularWeight,MolecularFormula,HBondDonorCount"
+}
+
+### Get response by name filtered only synonyms
+
+POST https://chem-handler-api-v2.vercel.app/pubchem/name
+Content-Type: application/json
+
+{
+"name": "glucose",
+"operationType": "synonyms"
+}
+
+### Get response by name filtered only PNG
+
+GET https://chem-handler-api-v2.vercel.app/pubchem/name/glucose/image
+
+</blockquote>
+
+<h4>### Search by Smiles:</h4>
+<blockquote>
+### Get by name full records
+POST https://chem-handler-api-v2.vercel.app/pubchem/smiles
+Content-Type: application/json
+
+{
+"smiles": "CCCC",
+"operationType": "fullRecords"
+}
+
+### Get response by name filtered by property
+
+POST https://chem-handler-api-v2.vercel.app/pubchem/smiles
+Content-Type: application/json
+
+{
+"smiles": "CCCC",
+"operationType": "property",
+"propertyName": "MolecularWeight"
+}
+
+### Get response by name filtered by multiple properties
+
+POST https://chem-handler-api-v2.vercel.app/pubchem/smiles
+Content-Type: application/json
+
+{
+"smiles": "CCCC",
+"operationType": "property",
+"propertyName": "MolecularWeight,MolecularFormula,HBondDonorCount"
+}
+
+### Get response by name filtered only synonyms
+
+POST https://chem-handler-api-v2.vercel.app/pubchem/smiles
+Content-Type: application/json
+
+{
+"smiles": "CCCC",
+"operationType": "synonyms"
+}
+
+### Get response by name filtered only PNG
+
+GET https://chem-handler-api-v2.vercel.app/pubchem/smiles/CCCC/image
+
+</blockquote>
+
+<blockquote>
+You can locate the folder at: <b>src/pubchem/interceptors/pubchem-response.interceptor.ts</b> <br>
+This file is primarily responsible for transforming the original records obtained from PubChem.</blockquote>
