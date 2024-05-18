@@ -51,13 +51,19 @@ export class PubchemResponseInterceptor implements NestInterceptor {
   interceptFullRecords(data: TFullRecordsData) {
     const compoundData = data.PC_Compounds[0];
     const pk: number = findValueByKey(data, 'cid');
-    const indexProp = compoundData.props.findIndex(
+    const indexSmilesProp = compoundData.props.findIndex(
       (prop) => prop.urn.label === 'SMILES',
     );
-    const smiles: string = compoundData.props[indexProp]?.value?.sval;
+    const indexInciName = compoundData.props.findIndex(
+      (prop) => prop.urn.label === 'InChI',
+    );
+
+    const smiles: string = compoundData.props[indexSmilesProp]?.value?.sval;
+    const inchi: string = compoundData.props[indexInciName]?.value?.sval;
     return {
       pk,
       smiles,
+      inchi,
     };
   }
   interceptProperties(data: TPropertyData) {
