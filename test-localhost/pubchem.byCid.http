@@ -3,7 +3,7 @@ POST http://localhost:3000/pubchem/cid
 Content-Type: application/json
 
 {
-    "id": 12,
+    "id": 10,
     "operationType": "fullRecords"
 }
 
