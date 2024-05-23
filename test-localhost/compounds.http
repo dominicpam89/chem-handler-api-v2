@@ -1,0 +1,5 @@
+### Get compounds
+GET http://localhost:3000/compounds
+
+### Get compound by id
+GET http://localhost:3000/compounds/3

@@ -4,15 +4,16 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { getResponse } from './locals.util';
-import { Compound } from './entity/compound.entity';
+import { JSONBinCompound } from './entity/compound.entity';
 
 @Injectable()
 export class LocalsService {
   private readonly path: string =
-    'https://charming-plum-handbag.cyclic.app/compounds';
+    'https://api.jsonbin.io/v3/b/664f5dd0ad19ca34f86dfacd';
   async getCompounds() {
     const data = await getResponse(this.path);
-    const compounds: Compound[] = await data.json();
+    const record: JSONBinCompound = await data.json();
+    const { compounds } = record.record;
     return compounds;
   }
 
