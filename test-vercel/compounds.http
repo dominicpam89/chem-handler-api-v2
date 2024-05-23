@@ -1,0 +1,5 @@
+### Get compounds
+GET https://chem-handler-api-v2.vercel.app/compounds
+
+### Get compound by id
+GET https://chem-handler-api-v2.vercel.app/compounds/3

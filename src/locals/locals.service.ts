@@ -14,8 +14,8 @@ export class LocalsService {
   constructor(private configService: ConfigService) {}
   async getCompounds() {
     const keys = {
-      master: this.configService.get('JSONBIN-IO-MASTER-KEY'),
-      access: this.configService.get('JSONBIN-IO-ACCESS-KEY'),
+      master: this.configService.get('JSONBIN_IO_MASTER_KEY'),
+      access: this.configService.get('JSONBIN_IO_ACCESS_KEY'),
     };
     const data = await getResponse(this.path, keys);
     const record: JSONBinCompound = await data.json();
