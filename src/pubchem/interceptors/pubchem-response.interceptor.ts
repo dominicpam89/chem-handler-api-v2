@@ -51,26 +51,37 @@ export class PubchemResponseInterceptor implements NestInterceptor {
   interceptFullRecords(data: TFullRecordsData) {
     const compoundData = data.PC_Compounds[0];
     const pk: number = findValueByKey(data, 'cid');
-    const indexInciName = compoundData.props.findIndex(
+    const indexInchiName = compoundData.props.findIndex(
       (prop) => prop.urn.label === 'InChI',
     );
-    const smilesRaw = compoundData.props.filter(
+    const indexInchiKey = compoundData.props.findIndex(
+      (prop) => prop.urn.label === 'InChIKey',
+    );
+    const indexSmiles = compoundData.props.findIndex(
       (prop) => prop.urn.label === 'SMILES',
     );
-    const IUPACNamesRaw = compoundData.props.filter(
+    const indexIUPACName = compoundData.props.findIndex(
       (prop) => prop.urn.label === 'IUPAC Name',
     );
-    const IUPACNames: Array<string> = IUPACNamesRaw.map(
-      (obj) => obj.value.sval,
+    const indexMolecularFormula = compoundData.props.findIndex(
+      (prop) => prop.urn.label === 'Molecular Formula',
     );
-    const smiles = smilesRaw.map((smile) => smile.value.sval);
 
-    const inchi: string = compoundData.props[indexInciName]?.value?.sval;
+    const inchi: string = compoundData.props[indexInchiName]?.value?.sval;
+    const inchiKey = compoundData.props[indexInchiKey]?.value?.sval;
+    const smiles = compoundData.props[indexSmiles]?.value?.sval;
+    const IUPACNames = compoundData.props[indexIUPACName]?.value?.sval;
+    const molecularFormula =
+      compoundData.props[indexMolecularFormula]?.value?.sval;
+    const count = compoundData.count;
     return {
       pk,
       smiles,
       inchi,
+      inchiKey,
       IUPACNames,
+      molecularFormula,
+      count,
     };
   }
   interceptProperties(data: TPropertyData) {

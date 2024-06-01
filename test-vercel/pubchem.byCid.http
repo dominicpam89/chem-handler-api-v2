@@ -3,7 +3,7 @@ POST https://chem-handler-api-v2.vercel.app/pubchem/cid
 Content-Type: application/json
 
 {
-    "id": 12,
+    "id": 10,
     "operationType": "fullRecords"
 }
 
